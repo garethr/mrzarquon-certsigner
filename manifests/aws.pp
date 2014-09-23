@@ -27,4 +27,20 @@ class certsigner::aws {
     require => File['/opt/puppet/bin/autosign.rb'],
   }
 
+  ini_setting { 'trusted_node_data':
+    ensure  => present,
+    path    => '/etc/puppetlabs/puppet/puppet.conf',
+    section => 'master',
+    setting => 'trusted_node_data',
+    value   => 'true',
+  }
+
+  ini_setting { 'immutable_node_data':
+    ensure  => present,
+    path    => '/etc/puppetlabs/puppet/puppet.conf',
+    section => 'master',
+    setting => 'immutable_node_data',
+    value   => 'true',
+  }
+
 }
