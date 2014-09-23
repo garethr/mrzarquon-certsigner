@@ -26,6 +26,7 @@ fi
 /opt/puppet/bin/erb > /etc/puppetlabs/puppet/csr_attributes.yaml <<END
 extension_requests:
   pp_instance_id: <%= %x{curl -s http://169.254.169.254/latest/meta-data/instance-id} %>
+  pp_image_name:  <%= %x{curl -s http://169.254.169.254/latest/meta-data/ami-id %>
 END
 
 /opt/puppet/bin/puppet config set server ${PE_MASTER} --section agent
