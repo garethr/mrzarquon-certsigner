@@ -1,9 +1,9 @@
-#!/opt/puppet/bin/ruby
+#!/usr/bin/env ruby
 
 require 'etc'
 
 ENV['HOME'] = Etc.getpwuid(Process.uid).dir
-ENV['FOG_RC'] = '/etc/puppetlabs/puppet/autosignfog.yaml'
+ENV['FOG_RC'] = '/etc/puppet/autosignfog.yaml'
 
 require 'fog'
 require 'puppet'
@@ -27,11 +27,5 @@ elsif not server
 elsif server.state != 'running'
   retcode = 3
 end
-
-classes = server.tags['puppet_classes'].delete(' ').split(",")
-
-classyaml = { "classes" => classes }
-
-File.open("/etc/puppetlabs/puppet/data/clientcert/#{clientcert}.yaml", 'w') { |f| f.write classyaml.to_yaml }
 
 exit retcode

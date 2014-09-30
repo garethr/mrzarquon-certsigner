@@ -1,30 +1,20 @@
 class certsigner::aws {
 
-  file { '/etc/puppetlabs/puppet/autosignfog.yaml':
+  file { '/usr/local/bin/puppet-aws-autosign.rb':
     ensure  => file,
-    owner   => 'pe-puppet',
-    group   => 'pe-puppet',
-    mode    => '0600',
-    replace => false,
-    source  => 'puppet:///modules/certsigner/autosignfog.yaml',
-  }
-  
-  file { '/opt/puppet/bin/autosign.rb':
-    ensure  => file,
-    owner   => 'pe-puppet',
-    group   => 'pe-puppet',
+    owner   => 'puppet',
+    group   => 'puppet',
     mode    => '0755',
-    source  => 'puppet:///modules/certsigner/autosign.rb',
-    require => File['/etc/puppetlabs/puppet/autosignfog.yaml'],
+    source  => 'puppet:///modules/certsigner/puppet-aws-autosign.rb',
   }
 
   ini_setting { 'autosign':
     ensure  => present,
-    path    => '/etc/puppetlabs/puppet/puppet.conf',
+    path    => '/etc/puppet/puppet.conf',
     section => 'master',
     setting => 'autosign',
-    value   => '/opt/puppet/bin/autosign.rb',
-    require => File['/opt/puppet/bin/autosign.rb'],
+    value   => '/usr/local/bin/puppet-aws-autosign.rb',
+    require => File['/usr/local/bin/puppet-aws-autosign.rb'],
   }
 
 }
