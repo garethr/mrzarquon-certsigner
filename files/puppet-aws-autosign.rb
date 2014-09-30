@@ -12,17 +12,23 @@ require 'securerandom'
 
 uuid = SecureRandom.uuid
 
-log = Logger.new("/tmp/#certsigner-{uuid}.log")
+log = Logger.new("/tmp/certsigner-#{uuid}.log")
 
 clientcert = ARGV.pop
 
 log.info(clientcert)
+log.info(STDIN.read)
 
+begin
 csr = Puppet::SSL::CertificateRequest.from_s(STDIN.read)
 pp_instance_id = csr.request_extensions.find { |a| a['oid'] == 'pp_instance_id' }
 instance_id = pp_instance_id['value']
+rescue Exception => e
+  log.error(e.message)
+  log.error(e.backtrace.inspect)
+  exit 4
+end
 
-log.info(STDIN.read)
 log.info(pp_instance_id)
 log.info(instance_id)
 
