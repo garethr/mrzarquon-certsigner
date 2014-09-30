@@ -20,9 +20,11 @@ retcode = 0
 ec2 = Fog::Compute.new( :provider => :aws)
 server = ec2.servers.find { |s| s.id == instance_id }
 
-if csr.name != clientcert
-  retcode = 1
-elsif not server
+#if csr.name != clientcert
+#  retcode = 1
+#els
+
+if not server
   retcode = 2
 elsif server.state != 'running'
   retcode = 3
